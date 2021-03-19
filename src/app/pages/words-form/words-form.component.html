@@ -1,0 +1,9 @@
+<form [formGroup]="textForm" (ngSubmit)="onFormSubmit()">
+  <h1>Word Form</h1>
+  <label>
+    First Name:
+    <input type="text" formControlName="textContent" />
+  </label>
+
+  <button type="submit" [disabled]="!textForm.valid">VERZEND</button>
+</form>
