@@ -1,10 +1,14 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import {
   AbstractControl,
   FormControl,
   FormGroup,
   Validators,
 } from "@angular/forms";
+import WordFrequencyAnalyzer, {
+  WordFrequency,
+} from "../../counting-words/lib/counting-words";
+import { SentenceService } from "../../services/sentence.service";
 
 @Component({
   selector: "app-words-form",
@@ -13,23 +17,35 @@ import {
 })
 export class WordsFormComponent {
   textForm: FormGroup;
+  analysisReport: WordFrequency[] = [];
+  wordAnalyzer: WordFrequencyAnalyzer = new WordFrequencyAnalyzer();
 
-  constructor() {
-    this.textForm = new FormGroup({
-      textContent: new FormControl("", [
-        Validators.required,
-        Validators.pattern("^[a-zA-Z]+$"),
-      ]),
-    });
+  constructor(private sentenceService: SentenceService) {
+    this.textForm = new FormGroup(
+      {
+        textContent: new FormControl("", [
+          Validators.required,
+          // Validators.pattern("^[a-zA-Z .,]+$"),
+        ]),
+      },
+      { updateOn: "submit" }
+    );
   }
 
   onFormSubmit() {
-    console.log(this.textContent);
-
-    // Dostuff
+    if (this.textContent.status === "VALID") {
+      this.analysisReport = this.wordAnalyzer.getAllWordsFromText(
+        this.textContent.value
+      );
+    }
   }
 
   get textContent(): AbstractControl {
-    return this.textForm.value.textContent;
+    return this.textForm.controls.textContent;
+  }
+
+  generateSentence() {
+    const sentence = this.sentenceService.getRandomSentence();
+    this.textContent.setValue(sentence);
   }
 }

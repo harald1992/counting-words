@@ -1,9 +1,30 @@
+<a routerLink="">Back</a>
+
 <form [formGroup]="textForm" (ngSubmit)="onFormSubmit()">
   <h1>Word Form</h1>
-  <label>
+  <label class="textContent">
     First Name:
     <input type="text" formControlName="textContent" />
+    <button type="button" (click)="generateSentence()">
+      Generate Sentence
+    </button>
   </label>
 
-  <button type="submit" [disabled]="!textForm.valid">VERZEND</button>
+  <br />
+  <br />
+  <button type="submit" [disabled]="!textForm.valid">Send</button>
 </form>
+
+<hr />
+<h1>Analysis Report</h1>
+
+<table class="analysis-report-table">
+  <th>Word</th>
+  <th>Frequency</th>
+  <tr *ngFor="let item of analysisReport">
+    <td>{{ item.getWord() }}</td>
+    <td>{{ item.getFrequency() }}</td>
+  </tr>
+</table>
+
+<hr />
