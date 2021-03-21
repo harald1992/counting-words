@@ -33,7 +33,7 @@ export class WordFrequencyAnalyzer implements IWordFrequencyAnalyzer {
     text = text.toLowerCase();
     const listOfWords: WordFrequency[] = [];
 
-    const wordRegex = /([A-Za-z])\w+/g;
+    const wordRegex = /([A-Za-z])\w*/g;
     const words = text.match(wordRegex);
 
     words?.forEach((wordText) => {
