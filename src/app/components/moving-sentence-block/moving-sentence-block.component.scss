@@ -1,0 +1,21 @@
+.sentence-block {
+  padding: 32px;
+  border-radius: 100%;
+  border: solid 1px black;
+  min-width: 50px;
+  max-width: 300px;
+  min-height: 100px;
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  transition: transform 5s ease-in;
+  z-index: -1;
+
+  &:hover {
+    background-color: gray;
+  }
+
+  &.destination {
+    transform: translate(0, 100vh);
+  }
+}

@@ -18,10 +18,12 @@ export class SentenceService {
       : "";
   }
 
-  getRandomSentence(): string {
+  getRandomSentence(maxSentenceLength: number = 100): string {
     let sentence: string = "";
 
-    const sentenceLength: number = Math.floor(Math.random() * (100 + 1));
+    const sentenceLength: number =
+      Math.floor(Math.random() * maxSentenceLength) + 1;
+
     for (let i = 0; i < sentenceLength; i++) {
       const word = this.getRandomWord();
       if (i === 0) {

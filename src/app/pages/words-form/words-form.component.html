@@ -1,15 +1,15 @@
 <a routerLink="">Back</a>
 
-<form [formGroup]="textForm" (ngSubmit)="onFormSubmit()">
+<form class="word-form" [formGroup]="textForm" (ngSubmit)="onFormSubmit()">
   <h1>Word Form</h1>
+
   <label class="textContent">
     First Name:
     <input type="text" formControlName="textContent" />
-    <button type="button" (click)="generateSentence()">
-      Generate Sentence
-    </button>
   </label>
-
+  <button type="button" (click)="generateSentence()">
+    Generate random sentence
+  </button>
   <br />
   <br />
   <button type="submit" [disabled]="!textForm.valid">Send</button>

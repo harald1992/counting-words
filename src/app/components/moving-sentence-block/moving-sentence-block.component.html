@@ -1,0 +1,8 @@
+<div
+  class="sentence-block"
+  (click)="onSentenceClicked()"
+  [class.destination]="startMoving"
+  [ngStyle]="{ right: position }"
+>
+  <p>{{ data.sentence }}</p>
+</div>

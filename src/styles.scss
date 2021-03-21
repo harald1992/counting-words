@@ -1,5 +1,20 @@
+/* Variables */
+$color-primary: lightskyblue;
+$color-light: white;
+$color-background: silver;
+
+/* Layout */
+$layout-small: 719px; // Breakpoint.Handset, Breakpoint.Tablet(Small)
+$layout-large: 959px;
+
 @mixin mobile {
-  @media (max-width: #{680px}) {
+  @media (max-width: #{$layout-small}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: #{$layout-large}) {
     @content;
   }
 }
@@ -44,29 +59,41 @@ p {
 }
 
 header {
-  background-color: darkgray;
+  background-color: $color-primary;
+  border-bottom: 1px black solid;
 }
 
 main.content {
-  padding: 32px 0;
-  background-color: silver;
+  background-color: $color-background;
   flex: 1 0 auto;
   overflow: hidden;
+  padding: 32px 16px;
 
   > .content-container {
     margin: 0 auto;
-    max-width: 900px;
-    background-color: white;
-    padding: 16px;
+    max-width: $layout-large;
+    background-color: $color-light;
+    padding: 48px;
     box-shadow: 0 2px 2px 0;
     box-sizing: border-box;
     border-radius: 4px;
+
+    @include tablet() {
+      padding: 32px;
+    }
+
+    @include mobile() {
+      padding: 8px;
+    }
   }
 }
 
 .footer {
   margin: 0;
-  background-color: darkgray;
+  background-color: $color-primary;
+  border-top: 1px black solid;
+  padding: 8px;
+
   .copyright {
     text-align: center;
     line-height: 32px;
@@ -77,9 +104,9 @@ button {
   font-size: 16px;
   padding: 8px 16px;
   border: 1p solid black;
-  background-color: lightskyblue;
+  background-color: $color-primary;
 
   &:hover {
-    background-color: lighten(lightskyblue, 10);
+    background-color: lighten($color-primary, 10);
   }
 }

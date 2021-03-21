@@ -1,7 +1,15 @@
-.textContent {
-  > input {
-    margin: 8px;
-    width: 60%;
+form.word-form {
+  display: flex;
+  flex-direction: column;
+
+  .textContent {
+    display: flex;
+    flex-direction: column;
+    margin: 8px 0;
+
+    > input {
+      flex: 1 1 auto;
+    }
   }
 }
 

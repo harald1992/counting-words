@@ -1,0 +1,26 @@
+<div class="gameboard" [class.gameStarted]="gameStarted">
+  <div class="game-form">
+    <a routerLink="">Back to homepage</a>
+    <h1>Catching words game</h1>
+
+    <div class="column-division">
+      <div class="form">
+        <button type="button" (click)="createComponent()">
+          Create component
+        </button>
+
+        <button type="button" (click)="startGame()">Start Game</button>
+        <button type="button" (click)="endGame()">End Game</button>
+      </div>
+
+      <div class="scoreboard">
+        <p>
+          Time Remaining : <b>{{ timeDuration }}</b> seconds
+        </p>
+        <div>score = {{ score }}</div>
+      </div>
+    </div>
+  </div>
+  <br />
+  <ng-template adHost></ng-template>
+</div>

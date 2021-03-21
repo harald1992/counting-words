@@ -1,0 +1,13 @@
+@import "styles";
+
+img {
+  height: 150px;
+
+  @include tablet() {
+    height: 100px;
+  }
+
+  @include mobile() {
+    height: 75px;
+  }
+}
