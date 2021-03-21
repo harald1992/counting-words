@@ -1,3 +1,5 @@
+@import "styles";
+
 table.analysis-report-table {
   max-width: 300px;
   width: 100%;
@@ -9,10 +11,14 @@ table.analysis-report-table {
     border: 1px solid black;
     text-align: left;
     padding: 8px;
+  }
 
-    &:nth-child(even) {
-      background-color: #dddddd;
-    }
+  th {
+    background-color: $color-primary;
+  }
+
+  tr:nth-child(even) {
+    background-color: $color-background;
   }
 
   td {

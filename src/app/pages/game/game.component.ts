@@ -1,8 +1,6 @@
 import {
   Component,
   ComponentFactoryResolver,
-  OnDestroy,
-  OnInit,
   Type,
   ViewChild,
 } from "@angular/core";
@@ -10,7 +8,7 @@ import { MovingSentenceBlockComponent } from "src/app/components/moving-sentence
 import WordFrequencyAnalyzer, {
   WordFrequency,
 } from "src/app/counting-words/lib/counting-words";
-import { AdDirective } from "src/app/directives/ad.directive";
+import { FactoryHostDirective } from "src/app/directives/factory-host.directive";
 import { SentenceService } from "src/app/services/sentence.service";
 import { take } from "rxjs/operators";
 
@@ -28,97 +26,108 @@ export class SentenceItem {
   templateUrl: "./game.component.html",
   styleUrls: ["./game.component.scss"],
 })
-export class GameComponent implements OnInit, OnDestroy {
+export class GameComponent {
   words: WordFrequency[] = [];
   wordAnalyzer: WordFrequencyAnalyzer = new WordFrequencyAnalyzer();
 
   lastScore: number = 0;
-
   wordObjective: string = "";
-  gameStarted: boolean = false;
+  gameInProgress: boolean = false;
   score: number = 0;
-  timeDuration: number = 0;
+  timeDurationS: number = 0;
 
-  timer: any;
-  gameRunning: any;
+  gameDurationTimer: any;
+  spawnSentenceInterval: any;
   endGameTimer: any;
 
-  @ViewChild(AdDirective, { static: true }) adHost!: AdDirective;
+  @ViewChild(FactoryHostDirective, { static: true })
+  factoryHost!: FactoryHostDirective;
 
   constructor(
     private sentenceService: SentenceService,
     private componentFactoryResolver: ComponentFactoryResolver
   ) {}
 
-  ngOnInit(): void {}
-
   createSentence(): string {
     return this.sentenceService.getRandomSentence(15);
   }
 
+  /* Creates a new falling sentence block */
   createComponent(sentence: string = "", value: number = 0) {
     const newComponent = new SentenceItem(MovingSentenceBlockComponent, {
       sentence,
       value,
     });
+
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
       newComponent.component
     );
-
-    const viewContainerRef = this.adHost.viewContainerRef;
-
+    const viewContainerRef = this.factoryHost.viewContainerRef;
     const componentRef = viewContainerRef.createComponent<SentenceComponent>(
       componentFactory
     );
-    componentRef.instance.data = newComponent.data;
 
+    // give the compnent a sentence and it's score
+    componentRef.instance.data = newComponent.data;
     componentRef.instance.sentenceClicked
       .pipe(take(1))
       .subscribe((value: any) => {
         // destroy the clicked sentence component, edit score and complete this Subscription via take(1)
-        console.log(value);
         this.score += value;
         componentRef.destroy();
       });
   }
 
-  startGame(gameLengthSeconds: number = 60000) {
+  startGame(gameLengthMs: number = 30000) {
     this.wordObjective = this.sentenceService.getRandomWord();
 
-    this.gameStarted = true;
+    this.gameInProgress = true;
     this.score = 0;
-    this.timeDuration = gameLengthSeconds / 1000;
+    this.timeDurationS = gameLengthMs / 1000;
 
-    this.timer = setInterval(() => {
-      this.timeDuration = this.timeDuration - 1;
+    this.gameDurationTimer = setInterval(() => {
+      this.timeDurationS = this.timeDurationS - 1;
     }, 1000);
 
-    this.gameRunning = setInterval(() => {
+    this.spawnSentenceInterval = setInterval(() => {
       const sentence = this.createSentence();
 
-      const value: number = 3;
+      /* check if on of the 3 most frequent words is the objective.
+       If the objective word is in the top 3, give a positive score if cought.*/
+      let isWordObjectiveTheMostUsed: boolean = false;
+      const mostFrequentThreeWords = this.wordAnalyzer.calculateMostFrequentNWords(
+        sentence,
+        3
+      );
+
+      mostFrequentThreeWords.forEach((item) => {
+        if (this.wordObjective === item.getWord()) {
+          isWordObjectiveTheMostUsed = true;
+        }
+      });
+
+      const value: number = isWordObjectiveTheMostUsed ? 1 : -1;
+
       this.createComponent(sentence, value);
-    }, 850);
+    }, 900);
 
     this.endGameTimer = setTimeout(() => {
       this.endGame();
-    }, gameLengthSeconds);
+    }, gameLengthMs);
   }
 
   clearBoard() {
-    const viewContainerRef = this.adHost.viewContainerRef;
+    const viewContainerRef = this.factoryHost.viewContainerRef;
     viewContainerRef.clear();
   }
 
   endGame() {
     this.lastScore = this.score;
-    clearInterval(this.timer);
-    clearInterval(this.gameRunning);
+    clearInterval(this.gameDurationTimer);
+    clearInterval(this.spawnSentenceInterval);
     clearTimeout(this.endGameTimer);
     this.clearBoard();
-    // todo: prevent current falling blocks from also editi8ng the score after the game is already over.
-    this.gameStarted = false;
+    this.score = 0;
+    this.gameInProgress = false;
   }
-
-  ngOnDestroy() {}
 }

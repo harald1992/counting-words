@@ -22,14 +22,13 @@ export class WordFrequency implements IWordFrequency {
 
   incrementFrequency(): void {
     this.frequency++;
-    // console.log('new freq = ' + this.frequency);
   }
 }
 
 export class WordFrequencyAnalyzer implements IWordFrequencyAnalyzer {
   constructor() {}
 
-  //summary
+  /* Exctracts all words from the input text and returns it in an unsorted array of WordFrequency objects. */
   getAllWordsFromText(text: string): WordFrequency[] {
     text = text.toLowerCase();
     const listOfWords: WordFrequency[] = [];
@@ -41,7 +40,6 @@ export class WordFrequencyAnalyzer implements IWordFrequencyAnalyzer {
       const alreadyExistingWord = listOfWords.find(
         (e) => e.getWord() === wordText
       );
-      // console.log(alreadyExistingWord);
       if (alreadyExistingWord) {
         alreadyExistingWord.incrementFrequency();
       } else {
@@ -52,6 +50,7 @@ export class WordFrequencyAnalyzer implements IWordFrequencyAnalyzer {
     return listOfWords;
   }
 
+  /* Returns the highest frequency a word appears in the text. */
   calculateHighestFrequency(text: string): number {
     let highestFrequency: number = 0;
 
@@ -66,16 +65,16 @@ export class WordFrequencyAnalyzer implements IWordFrequencyAnalyzer {
     return highestFrequency;
   }
 
+  /* Return the frequency the specific word appears in the text. */
   calculateFrequencyForWord(text: string, word: string): number {
     const listOfWords: WordFrequency[] = this.getAllWordsFromText(text);
 
     const wordInList = listOfWords.find((e) => e.getWord() === word);
 
-    // console.log(wordInList);
-
     return wordInList?.getFrequency() || 0;
   }
 
+  /* Returns the N most frequent words in an sorted array of WordFrequency objects */
   calculateMostFrequentNWords(text: string, n: number): WordFrequency[] {
     const listOfWords: WordFrequency[] = this.getAllWordsFromText(text);
     listOfWords.sort((a, b) => {

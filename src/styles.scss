@@ -110,3 +110,7 @@ button {
     background-color: lighten($color-primary, 10);
   }
 }
+
+a {
+  color: darken($color-primary, 50);
+}

@@ -1,21 +1,20 @@
-<div class="gameboard" [class.gameStarted]="gameStarted">
+<div class="gameboard" [class.gameInProgress]="gameInProgress">
   <div class="game-form">
     <a routerLink="">Back to homepage</a>
     <h1>Catching words game</h1>
     <p>
       The objective is to click all falling sentences containing specific words
-      before they end the bottom of the page.
+      before they end the bottom of the page. The sentence must have the
+      objective word as the most frequent occurring word in it.
     </p>
     <p>
-      If you click the sentence containing that word, you will get minus points.
+      If the sentence has two words tied for most occurring, only the one that's
+      first in alphabetic order, will be counting.
     </p>
+    <p>If you click the wrong sentence, you will get minus points.</p>
     <br />
     <div class="column-division">
       <div class="form">
-        <!-- <button type="button" (click)="createComponent()">
-          Create component
-        </button> -->
-
         <button type="button" (click)="startGame()">Start Game</button>
         <button type="button" (click)="endGame()">End Game</button>
       </div>
@@ -25,17 +24,17 @@
           Your last score was : <b>{{ lastScore }}</b>
         </p>
 
-        <p>
-          Objective: Click all words that contain
-          <b> "{{ wordObjective || "" }} "</b>
+        <p *ngIf="wordObjective">
+          Objective: Click all words that contain the word
+          <b> "{{ wordObjective }}" as one of the 3 most occurring words."</b>
         </p>
         <p>
-          Time Remaining : <b>{{ timeDuration }}</b> seconds
+          Time Remaining : <b>{{ timeDurationS }}</b> seconds
         </p>
         <div>score = {{ score }}</div>
       </div>
     </div>
   </div>
   <br />
-  <ng-template adHost></ng-template>
+  <ng-template factoryHost></ng-template>
 </div>
