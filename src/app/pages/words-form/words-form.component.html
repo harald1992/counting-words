@@ -2,10 +2,11 @@
 
 <form class="word-form" [formGroup]="textForm" (ngSubmit)="onFormSubmit()">
   <h1>Word Form</h1>
-
+  <h1>{{ textForm.valid | json }}</h1>
   <label class="textContent">
-    First Name:
+    First Name: *
     <input type="text" formControlName="textContent" />
+    <span *ngIf="hasError(textContent)">Dit veld is verplicht.</span>
   </label>
   <button type="button" (click)="generateSentence()">
     Generate random sentence

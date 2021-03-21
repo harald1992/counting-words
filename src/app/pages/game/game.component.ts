@@ -14,12 +14,12 @@ import { AdDirective } from "src/app/directives/ad.directive";
 import { SentenceService } from "src/app/services/sentence.service";
 import { take } from "rxjs/operators";
 
-export interface AdComponent {
+export interface SentenceComponent {
   data: any;
   sentenceClicked: any;
 }
 
-export class AdItem {
+export class SentenceItem {
   constructor(public component: Type<any>, public data: any) {}
 }
 
@@ -32,6 +32,9 @@ export class GameComponent implements OnInit, OnDestroy {
   words: WordFrequency[] = [];
   wordAnalyzer: WordFrequencyAnalyzer = new WordFrequencyAnalyzer();
 
+  lastScore: number = 0;
+
+  wordObjective: string = "";
   gameStarted: boolean = false;
   score: number = 0;
   timeDuration: number = 0;
@@ -49,16 +52,12 @@ export class GameComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {}
 
-  createWord(): string {
-    const newSentence = this.sentenceService.getRandomSentence(25);
-    return newSentence;
+  createSentence(): string {
+    return this.sentenceService.getRandomSentence(15);
   }
 
-  createComponent() {
-    const sentence = this.createWord();
-    const value = 3;
-
-    const newComponent = new AdItem(MovingSentenceBlockComponent, {
+  createComponent(sentence: string = "", value: number = 0) {
+    const newComponent = new SentenceItem(MovingSentenceBlockComponent, {
       sentence,
       value,
     });
@@ -68,7 +67,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
     const viewContainerRef = this.adHost.viewContainerRef;
 
-    const componentRef = viewContainerRef.createComponent<AdComponent>(
+    const componentRef = viewContainerRef.createComponent<SentenceComponent>(
       componentFactory
     );
     componentRef.instance.data = newComponent.data;
@@ -84,6 +83,8 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   startGame(gameLengthSeconds: number = 60000) {
+    this.wordObjective = this.sentenceService.getRandomWord();
+
     this.gameStarted = true;
     this.score = 0;
     this.timeDuration = gameLengthSeconds / 1000;
@@ -93,7 +94,10 @@ export class GameComponent implements OnInit, OnDestroy {
     }, 1000);
 
     this.gameRunning = setInterval(() => {
-      this.createComponent();
+      const sentence = this.createSentence();
+
+      const value: number = 3;
+      this.createComponent(sentence, value);
     }, 850);
 
     this.endGameTimer = setTimeout(() => {
@@ -107,6 +111,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   endGame() {
+    this.lastScore = this.score;
     clearInterval(this.timer);
     clearInterval(this.gameRunning);
     clearTimeout(this.endGameTimer);

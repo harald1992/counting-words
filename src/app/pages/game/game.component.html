@@ -2,18 +2,33 @@
   <div class="game-form">
     <a routerLink="">Back to homepage</a>
     <h1>Catching words game</h1>
-
+    <p>
+      The objective is to click all falling sentences containing specific words
+      before they end the bottom of the page.
+    </p>
+    <p>
+      If you click the sentence containing that word, you will get minus points.
+    </p>
+    <br />
     <div class="column-division">
       <div class="form">
-        <button type="button" (click)="createComponent()">
+        <!-- <button type="button" (click)="createComponent()">
           Create component
-        </button>
+        </button> -->
 
         <button type="button" (click)="startGame()">Start Game</button>
         <button type="button" (click)="endGame()">End Game</button>
       </div>
 
       <div class="scoreboard">
+        <p *ngIf="lastScore">
+          Your last score was : <b>{{ lastScore }}</b>
+        </p>
+
+        <p>
+          Objective: Click all words that contain
+          <b> "{{ wordObjective || "" }} "</b>
+        </p>
         <p>
           Time Remaining : <b>{{ timeDuration }}</b> seconds
         </p>

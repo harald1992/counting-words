@@ -21,15 +21,9 @@ export class WordsFormComponent {
   wordAnalyzer: WordFrequencyAnalyzer = new WordFrequencyAnalyzer();
 
   constructor(private sentenceService: SentenceService) {
-    this.textForm = new FormGroup(
-      {
-        textContent: new FormControl("", [
-          Validators.required,
-          // Validators.pattern("^[a-zA-Z .,]+$"),
-        ]),
-      },
-      { updateOn: "submit" }
-    );
+    this.textForm = new FormGroup({
+      textContent: new FormControl("", [Validators.required]),
+    });
   }
 
   onFormSubmit() {
@@ -41,7 +35,13 @@ export class WordsFormComponent {
   }
 
   get textContent(): AbstractControl {
+    console.log(this.textForm.controls.textContent);
+
     return this.textForm.controls.textContent;
+  }
+
+  hasError(control: AbstractControl): boolean {
+    return control.invalid && (control.dirty || control.touched);
   }
 
   generateSentence() {
