@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { GameComponent } from "./pages/game/game.component";
 import { MovingSentenceBlockComponent } from "./components/moving-sentence-block/moving-sentence-block.component";
 import { AdDirective } from "./directives/ad.directive";
+import { AnalysisReportTableComponent } from './pages/words-form/analysis-report-table/analysis-report-table.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,6 +21,7 @@ import { AdDirective } from "./directives/ad.directive";
     GameComponent,
     MovingSentenceBlockComponent,
     AdDirective,
+    AnalysisReportTableComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule],
   providers: [],

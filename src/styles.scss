@@ -106,7 +106,7 @@ button {
   border: 1p solid black;
   background-color: $color-primary;
 
-  &:hover {
+  &:hover:enabled {
     background-color: lighten($color-primary, 10);
   }
 }

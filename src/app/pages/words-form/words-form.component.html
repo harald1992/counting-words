@@ -2,30 +2,72 @@
 
 <form class="word-form" [formGroup]="textForm" (ngSubmit)="onFormSubmit()">
   <h1>Word Form</h1>
-  <h1>{{ textForm.valid | json }}</h1>
-  <label class="textContent">
-    First Name: *
-    <input type="text" formControlName="textContent" />
-    <span *ngIf="hasError(textContent)">Dit veld is verplicht.</span>
-  </label>
-  <button type="button" (click)="generateSentence()">
-    Generate random sentence
-  </button>
-  <br />
-  <br />
-  <button type="submit" [disabled]="!textForm.valid">Send</button>
+  <p>
+    <i>
+      Here you can analyse a text by pasting the text inside the textbox. There
+      are several options to choose to generate different analysis reports.
+    </i>
+  </p>
+
+  <div class="form-section">
+    <label class="textContent">
+      Type of paste the text you want to analyze here: *
+      <textarea formControlName="textContent" rows="4" cols="50"> </textarea>
+      <span *ngIf="hasError(textContent)">This field is mandatory</span>
+    </label>
+    <button type="button" (click)="generateSentence()">
+      Generate random sentence
+    </button>
+  </div>
+
+  <div class="form-section">
+    <label>
+      Fill in the word you want to receive the frequency of.
+      <input type="text" formControlName="word" placeholder="lake" />
+    </label>
+  </div>
+
+  <div class="form-section">
+    <label>
+      How many of the most frequent words would you like to see?
+      <input
+        type="number"
+        formControlName="mostFrequentNWordAmount"
+        placeholder="5"
+      />
+    </label>
+  </div>
+
+  <div class="form-section">
+    <button type="submit">Complete analysis</button>
+  </div>
 </form>
 
-<hr />
-<h1>Analysis Report</h1>
+<br />
 
-<table class="analysis-report-table">
-  <th>Word</th>
-  <th>Frequency</th>
-  <tr *ngFor="let item of analysisReport">
-    <td>{{ item.getWord() }}</td>
-    <td>{{ item.getFrequency() }}</td>
-  </tr>
-</table>
+<ng-container *ngIf="highestFrequency">
+  <h1>Analysis</h1>
+  <i>Based on the supplied text and filled in fields these are the results:</i>
 
-<hr />
+  <br />
+
+  <p *ngIf="highestFrequency">
+    The highest frequency in the text is {{ highestFrequency }}.
+  </p>
+
+  <p *ngIf="frequencyForWord">
+    Furthermore, the word "{{ word.value }}" is used
+    {{ frequencyForWord }} times.
+  </p>
+
+  <br />
+
+  <p *ngIf="this.mostFrequentNWords.length">
+    This table shows the {{ mostFrequentNWordAmount.value }} most frequent words
+    in the text.
+  </p>
+  <app-analysis-report-table
+    *ngIf="this.mostFrequentNWords.length"
+    [list]="this.mostFrequentNWords"
+  ></app-analysis-report-table>
+</ng-container>

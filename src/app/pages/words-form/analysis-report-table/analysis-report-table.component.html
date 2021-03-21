@@ -1,0 +1,8 @@
+<table class="analysis-report-table">
+  <th>Word</th>
+  <th>Frequency</th>
+  <tr *ngFor="let item of list">
+    <td>{{ item.getWord() }}</td>
+    <td>{{ item.getFrequency() }}</td>
+  </tr>
+</table>

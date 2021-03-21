@@ -1,7 +1,7 @@
 import {
   IWordFrequency,
   IWordFrequencyAnalyzer,
-} from './counting-words.interface';
+} from "./counting-words.interface";
 
 export class WordFrequency implements IWordFrequency {
   private word: string;
@@ -29,6 +29,7 @@ export class WordFrequency implements IWordFrequency {
 export class WordFrequencyAnalyzer implements IWordFrequencyAnalyzer {
   constructor() {}
 
+  //summary
   getAllWordsFromText(text: string): WordFrequency[] {
     text = text.toLowerCase();
     const listOfWords: WordFrequency[] = [];
