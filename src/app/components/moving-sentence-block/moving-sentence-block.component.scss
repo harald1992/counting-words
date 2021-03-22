@@ -10,6 +10,7 @@
   right: 0%;
   transition: transform 10s ease-in;
   z-index: -1;
+  cursor: pointer;
 
   &:hover {
     background-color: gray;
