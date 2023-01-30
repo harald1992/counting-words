@@ -6,7 +6,7 @@ import { EXAMPLE_SENTENCES_MAP } from "../utils/sentence-dictionary";
   providedIn: "root",
 })
 export class SentenceService {
-  constructor() {}
+  constructor() { }
 
   getRandomWord(): string {
     const getKeys: number[] = Object.keys(EXAMPLE_SENTENCES_MAP).map(Number);
