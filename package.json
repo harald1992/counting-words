@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --base-href ./docs --output-path ./docs",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "test": "jest",
@@ -44,7 +44,13 @@
     "setupFilesAfterEnv": [
       "<rootDir>/setupJest.ts"
     ],
-    "moduleFileExtensions": ["js", "jsx", "json", "ts", "tsx"],
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "json",
+      "ts",
+      "tsx"
+    ],
     "testPathIgnorePatterns": [
       "<rootDir>/node_modules/",
       "<rootDir>/dist/"
